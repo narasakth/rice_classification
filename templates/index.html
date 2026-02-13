@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍚 Rice Variety Classifier — AI Rice Identification</title>
+    <meta name="description"
+        content="Upload a rice grain image and let AI identify its variety: Arborio, Basmati, Ipsala, Jasmine, or Karacadag">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <!-- Background decoration -->
+    <div class="bg-decoration">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🍚</span>
+                <div>
+                    <h1>Rice Variety Classifier</h1>
+                    <p class="tagline">AI-Powered Rice Identification</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-content" id="uploadContent">
+                        <div class="upload-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" y1="3" x2="12" y2="15" />
+                            </svg>
+                        </div>
+                        <h3>ลากวางภาพข้าวที่นี่</h3>
+                        <p>หรือคลิกเพื่อเลือกไฟล์</p>
+                        <span class="upload-hint">รองรับ JPG, PNG, WEBP</span>
+                    </div>
+                    <div class="preview-container" id="previewContainer" style="display:none;">
+                        <img id="previewImage" alt="Preview">
+                        <button class="btn-remove" id="btnRemove" title="ลบภาพ">&times;</button>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+
+                <button class="btn-predict" id="btnPredict" disabled>
+                    <span class="btn-text">วิเคราะห์สายพันธุ์ข้าว</span>
+                    <span class="btn-loading" style="display:none;">
+                        <span class="spinner"></span> กำลังวิเคราะห์...
+                    </span>
+                </button>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display:none;">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h2>ผลการวิเคราะห์</h2>
+                        <div class="result-badge" id="resultBadge">
+                            <span class="badge-icon">✅</span>
+                            <span id="topPrediction">—</span>
+                        </div>
+                    </div>
+                    <div class="top-result">
+                        <div class="top-confidence">
+                            <span class="confidence-value" id="topConfidence">0%</span>
+                            <span class="confidence-label">ความมั่นใจ</span>
+                        </div>
+                    </div>
+                    <div class="all-predictions" id="allPredictions">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error display -->
+            <div class="error-message" id="errorMessage" style="display:none;">
+                <span class="error-icon">⚠️</span>
+                <span id="errorText"></span>
+            </div>
+        </main>
+
+        <!-- Rice Info Section -->
+        <section class="info-section">
+            <h2 class="info-title">🌾 สายพันธุ์ข้าวที่รองรับ</h2>
+            <div class="info-grid">
+                <div class="info-card" data-variety="arborio">
+                    <div class="info-card-icon">🇮🇹</div>
+                    <h3>Arborio</h3>
+                    <p>ข้าวอิตาลี เมล็ดสั้นอ้วน นิยมทำริซอตโต้ เนื้อเหนียวนุ่มเมื่อหุง</p>
+                </div>
+                <div class="info-card" data-variety="basmati">
+                    <div class="info-card-icon">🇮🇳</div>
+                    <h3>Basmati</h3>
+                    <p>ข้าวอินเดีย-ปากีสถาน เมล็ดยาวเรียว หอม นิยมทำข้าวหมก บิรยานี</p>
+                </div>
+                <div class="info-card" data-variety="ipsala">
+                    <div class="info-card-icon">🇹🇷</div>
+                    <h3>Ipsala</h3>
+                    <p>ข้าวตุรกี เมล็ดกลางถึงยาว ปลูกในภาค Thrace คุณภาพสูง</p>
+                </div>
+                <div class="info-card" data-variety="jasmine">
+                    <div class="info-card-icon">🇹🇭</div>
+                    <h3>Jasmine</h3>
+                    <p>ข้าวหอมมะลิไทย เมล็ดยาว หอม เนื้อนุ่ม เป็นข้าวคุณภาพระดับโลก</p>
+                </div>
+                <div class="info-card" data-variety="karacadag">
+                    <div class="info-card-icon">🇹🇷</div>
+                    <h3>Karacadag</h3>
+                    <p>ข้าวพื้นเมืองตุรกี ปลูกบริเวณ Karacadağ เมล็ดสั้น รสชาติเข้มข้น</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🍚 Rice Variety Classifier — Powered by Deep Learning (ResNet V2)</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
