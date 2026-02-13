@@ -3,3 +3,4 @@ torch
 torchvision
 timm
 Pillow
+gunicorn
