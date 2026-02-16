@@ -1,5 +1,4 @@
-Flask
-Pillow
+streamlit
+tensorflow
 numpy
-onnxruntime
-gunicorn
+Pillow
